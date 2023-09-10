@@ -1,0 +1,8 @@
+/venv
+/data
+geckodriver.exe
+geckodriver.log
+output.json
+property_data.json
+downloaded_html.html
+test.ipynb
