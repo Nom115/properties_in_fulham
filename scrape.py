@@ -24,23 +24,24 @@ data = selector.xpath("//script[contains(.,'jsonModel = ')]/text()")
 data = data[0].split("jsonModel = ", 1)[1].strip()
 data = json.loads(data)
 pagination = data.get("pagination", {})
-total = pagination.get("total", None)
+pages = pagination.get("total", None)
 # Property ID scraping
 
-pages = total
+print(f"Total pages: {pages}")
 
 # Page count scrape
 url_list = []
 
 
-for i in range(pages):
-    index = i * 24
-    url = f"https://www.rightmove.co.uk/property-for-sale/find.html?locationIdentifier=OUTCODE%5E2519&index={i}&propertyTypes=&includeSSTC=false&mustHave=&dontShow=&furnishTypes=&keywords="
+for i in range(pages-1):
+    url = f"https://www.rightmove.co.uk/property-for-sale/find.html?locationIdentifier=OUTCODE%5E2519&index={i*24}&propertyTypes=&includeSSTC=false&mustHave=&dontShow=&furnishTypes=&keywords="
     url_list.append(url)
 
 scraped_data = []
-
+i = 1
 for url in url_list:
+
+    print(i)
     response = requests.get(url)
 
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -48,6 +49,7 @@ for url in url_list:
     hrefs = set(a['href']
                 for a in soup.find_all('a', class_='propertyCard-link'))
     scraped_data.extend([href.split('/')[2] for href in hrefs])
+    i = i+1
 
 
 property_id = pd.DataFrame({'property id': scraped_data})
@@ -107,4 +109,19 @@ for url in urls:
     extracted_data_list.append(extracted_data)
 
 df = pd.DataFrame(extracted_data_list)
+
+# Data cleaning
+
+
+def clean_data(df):
+    df['displayAddress'] = df['displayAddress'].str.replace("\n", "")
+    df['displayAddress'] = df['displayAddress'].str.replace("\r", "")
+    df['primaryPrice'] = df['primaryPrice'].str.replace(
+        '£', '').str.replace(',', '').astype(int)
+    df['bathrooms'] = df['bathrooms'].fillna(0).astype(int)
+    df['bedrooms'] = df['bedrooms'].fillna(0).astype(int)
+    return "clean"
+
+
+clean_data(df)
 df.to_csv('data/property_data/property_data.csv', index=False)
