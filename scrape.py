@@ -4,6 +4,11 @@ import pandas as pd
 import json
 from lxml import html
 from geopy.geocoders import Nominatim
+import os
+import pandas_gbq
+
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/google_auth.json'
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36",
@@ -126,6 +131,8 @@ def clean_data(df):
 
 clean_data(df)
 
+# Geodata using geopy
+
 geolocator = Nominatim(user_agent="my_geocoder")
 
 
@@ -142,4 +149,7 @@ df[['latitude', 'longitude']] = df.apply(
     geocode_postcode, axis=1, result_type='expand')
 
 
-df.to_csv('data/property_data/property_data.csv', index=False)
+table_id = "Bigquery_table_id"
+project_id = "Bigquery_project_id"
+
+pandas_gbq.to_gbq(df, table_id, project_id=project_id)
