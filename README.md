@@ -45,6 +45,6 @@ You'll also need to set up your Google Cloud credentials and specify the BigQuer
 6. The cleaned data is uploaded to Google BigQuery for further analysis and visualization in Looker Studio.
 
 ## Links
-[Link to Looker Studio](https://lookerstudio.google.com/u/1/reporting/2f500382-d5ab-44e1-a2f5-c9a91a34e45d/page/BAFcD)
-[Link to Rightmove](https://www.rightmove.co.uk/)
+- [Link to Looker Studio](https://lookerstudio.google.com/u/1/reporting/2f500382-d5ab-44e1-a2f5-c9a91a34e45d/page/BAFcD)
+- [Link to Rightmove](https://www.rightmove.co.uk/)
 
