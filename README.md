@@ -27,3 +27,24 @@ You'll also need to set up your Google Cloud credentials and specify the BigQuer
 
    ```bash
    pip install requests beautifulsoup4 pandas json lxml geopy pandas-gbq
+
+2. Set up your Google Cloud credentials by replacing /google_auth.json with the path to your authentication JSON file.
+
+3. Replace the placeholders for the BigQuery table ID and project ID with your specific values.
+
+4. Run the script:
+   ```bash
+   python scrape.py
+## Script Overview
+
+1. The script sends an HTTP request to Rightmove.co.uk and scrapes property data from multiple pages.
+2. It extracts property IDs, which are used to generate URLs for individual property pages.
+3. For each property page, it extracts various details such as property ID, price, address, bedrooms, bathrooms, and nearest stations.
+4. The extracted data is cleaned and prepared for storage in Google BigQuery.
+5. The geolocation of each property is determined using the geopy library and added as latitude and longitude columns.
+6. The cleaned data is uploaded to Google BigQuery for further analysis and visualization in Looker Studio.
+
+## Links
+[Link to Looker Studio](https://lookerstudio.google.com/u/1/reporting/2f500382-d5ab-44e1-a2f5-c9a91a34e45d/page/BAFcD)
+[Link to Rightmove](https://www.rightmove.co.uk/)
+
